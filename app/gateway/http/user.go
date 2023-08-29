@@ -17,7 +17,7 @@ func UserRegisterHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-ShouldBind"))
 		return
 	}
-	userResp, err := rpc.UserLogin(ctx, &req)
+	userResp, err := rpc.UserRegister(ctx, &req)
 	if err != nil {
 		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-UserRegister-RPC"))
 		return
