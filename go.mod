@@ -6,6 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-micro/plugins/v4/registry/etcd v1.2.0
+	github.com/streadway/amqp v1.1.0
 	go-micro.dev/v4 v4.10.2
 	golang.org/x/crypto v0.12.0
 	google.golang.org/protobuf v1.31.0
