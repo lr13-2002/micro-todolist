@@ -26,15 +26,15 @@ type UserModel struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"id" form:"id"
-	Id uint32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id uint32 `protobuf:"varint,1,opt,name=id,proto3" json:"id" form:"id"`
 	// @inject_tag: json:"user_name" form:"user_name"
-	UserName string `protobuf:"bytes,2,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserName string `protobuf:"bytes,2,opt,name=user_name,json=userName,proto3" json:"user_name" form:"user_name"`
 	// @inject_tag: json:"created_at" form:"created_at"
-	CreatedAt int64 `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt int64 `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at" form:"created_at"`
 	// @inject_tag: json:"updated_at" form:"updated_at"
-	UpdatedAt int64 `protobuf:"varint,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	UpdatedAt int64 `protobuf:"varint,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at" form:"updated_at"`
 	// @inject_tag: json:"deleted_at" form:"deleted_at"
-	DeletedAt int64 `protobuf:"varint,5,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
+	DeletedAt int64 `protobuf:"varint,5,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at" form:"deleted_at"`
 }
 
 func (x *UserModel) Reset() {
@@ -110,11 +110,11 @@ type UserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: name:"user_name" json:"user_name" form:"user_name"
-	UserName string `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserName string `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name" name:"user_name" form:"user_name"`
 	// @inject_tag: name:"password" json:"password" form:"password"
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password" name:"password" form:"password"`
 	// @inject_tag: name:"password_confirm" json:"password_confirm" form:"password_confirm"
-	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm" name:"password_confirm" form:"password_confirm"`
 }
 
 func (x *UserRequest) Reset() {
@@ -176,9 +176,9 @@ type UserResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"user_detail" form:"user_detail"
-	UserDetail *UserModel `protobuf:"bytes,1,opt,name=user_detail,json=userDetail,proto3" json:"user_detail,omitempty"`
+	UserDetail *UserModel `protobuf:"bytes,1,opt,name=user_detail,json=userDetail,proto3" json:"user_detail" form:"user_detail"`
 	// @inject_tag: json:"code" form:"code"
-	Code uint32 `protobuf:"varint,2,opt,name=code,proto3" json:"code,omitempty"`
+	Code uint32 `protobuf:"varint,2,opt,name=code,proto3" json:"code" form:"code"`
 }
 
 func (x *UserResponse) Reset() {

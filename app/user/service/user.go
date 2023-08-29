@@ -8,6 +8,8 @@ import (
 	"micro-todolist/idl/pb"
 	"micro-todolist/pkg/e"
 	"sync"
+
+	"gorm.io/gorm"
 )
 
 type UserSrv struct {
@@ -55,10 +57,25 @@ func (u *UserSrv) UserRegister(ctx context.Context, req *pb.UserRequest, resp *p
 		return
 	}
 
-	user, err := dao.NewUserDao(ctx).FindUserByUserName(req.UserName)
-	if err != nil {
+	if req.UserName == "" {
+		err = errors.New("用户名为空")
+		resp.Code = e.Error
 		return
 	}
+	_, err = dao.NewUserDao(ctx).FindUserByUserName(req.UserName)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+
+		} else {
+			resp.Code = e.Error
+			return
+		}
+	}
+
+	user := &model.User{
+		UserName: req.UserName,
+	}
+
 	if user.ID > 0 {
 		err = errors.New("用户名已存在")
 		resp.Code = e.Error
@@ -79,6 +96,8 @@ func (u *UserSrv) UserRegister(ctx context.Context, req *pb.UserRequest, resp *p
 		resp.Code = e.Error
 		return
 	}
+
+	resp.UserDetail = BuildUser(user)
 	return
 }
 
