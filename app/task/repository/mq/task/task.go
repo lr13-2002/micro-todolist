@@ -32,6 +32,7 @@ func (s *SyncTask) RunTaskService(ctx context.Context) (err error) {
 			if err != nil {
 				return
 			}
+			d.Ack(false)
 		}
 	}()
 	<-forever

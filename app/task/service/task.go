@@ -9,8 +9,6 @@ import (
 	"micro-todolist/idl/pb"
 	"micro-todolist/pkg/e"
 	"sync"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TaskSrv struct {
@@ -28,7 +26,7 @@ func GetTaskSrv() *TaskSrv {
 }
 
 //create task 送到 mq mq ---> 落库
-func (t *TaskSrv) CreateTask(ctx *gin.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
+func (*TaskSrv) CreateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
 	resp.Code = e.Success
 	body, _ := json.Marshal(req)
 	err = mq.SendMessage2MQ(body)
@@ -38,6 +36,7 @@ func (t *TaskSrv) CreateTask(ctx *gin.Context, req *pb.TaskRequest, resp *pb.Tas
 	}
 	return
 }
+
 func TaskMQ2DB(ctx context.Context, req *pb.TaskRequest) error {
 	m := &model.Task{
 		Uid:       uint(req.Uid),
@@ -48,4 +47,71 @@ func TaskMQ2DB(ctx context.Context, req *pb.TaskRequest) error {
 		EndTime:   req.EndTime,
 	}
 	return dao.NewTaskDao(ctx).CreateTask(m)
+}
+
+func (*TaskSrv) GetTasksList(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskListResponse) (err error) {
+	resp.Code = e.Success
+	if req.Limit == 0 {
+		req.Limit = 10
+	}
+	r, count, err := dao.NewTaskDao(ctx).ListTaskByUserId(req.Uid, int(req.Start), int(req.Limit))
+	if err != nil {
+		resp.Code = e.Error
+		return
+	}
+	var taskRes []*pb.TaskModel
+	for _, item := range r {
+		taskRes = append(taskRes, BuildTask(item))
+	}
+	resp.TaskList = taskRes
+	resp.Count = uint32(count)
+
+	return
+}
+
+func (*TaskSrv) GetTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
+	resp.Code = e.Success
+	r, err := dao.NewTaskDao(ctx).GetTaskByTaskAndUserId(req.Id, req.Uid)
+	if r.ID == 0 || err != nil {
+		resp.Code = e.Error
+		return
+	}
+	resp.TaskDetail = BuildTask(r)
+	return
+}
+
+func (*TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
+	resp.Code = e.Success
+	err = dao.NewTaskDao(ctx).UpdateTask(req)
+	if err != nil {
+		resp.Code = e.Error
+		return
+	}
+
+	return
+}
+
+func (*TaskSrv) DeleteTask(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskDetailResponse) (err error) {
+	resp.Code = e.Success
+	err = dao.NewTaskDao(ctx).DeleteTaskByTaskAndUserId(req.Id, req.Uid)
+	if err != nil {
+		resp.Code = e.Error
+		return
+	}
+
+	return
+}
+
+func BuildTask(item *model.Task) *pb.TaskModel {
+	return &pb.TaskModel{
+		Id:         uint64(item.ID),
+		Uid:        uint64(item.Uid),
+		Title:      item.Title,
+		Content:    item.Content,
+		StartTime:  item.StartTime,
+		EndTime:    item.EndTime,
+		Status:     int64(item.Status),
+		CreateTime: item.CreatedAt.Unix(),
+		UpdateTime: item.UpdatedAt.Unix(),
+	}
 }

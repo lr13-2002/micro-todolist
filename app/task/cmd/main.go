@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 	"micro-todolist/app/task/repository/db/dao"
+	"micro-todolist/app/task/repository/mq"
 	"micro-todolist/app/task/script"
-	"micro-todolist/app/user/service"
+	"micro-todolist/app/task/service"
 	"micro-todolist/config"
 	"micro-todolist/idl/pb"
 
@@ -17,6 +18,7 @@ import (
 func main() {
 	config.Init()
 	dao.InitDB()
+	mq.InitRabbitMQ()
 	loadingScript()
 	//etcd 注册
 	etcdReg := etcd.NewRegistry(
@@ -32,7 +34,7 @@ func main() {
 
 	microService.Init()
 
-	_ = pb.RegisterUserServiceHandler(microService.Server(), service.GetUserSrv())
+	_ = pb.RegisterTaskServiceHandler(microService.Server(), service.GetTaskSrv())
 
 	_ = microService.Run()
 }
