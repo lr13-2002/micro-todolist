@@ -47,3 +47,8 @@ services:
       - ETCD_AUTH_PASSWORD="todolist"
     networks:
       - todolist
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"

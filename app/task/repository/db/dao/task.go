@@ -25,15 +25,11 @@ func (dao *TaskDao) CreateTask(data *model.Task) error {
 	return dao.Model(&model.Task{}).Create(&data).Error
 }
 
-func (dao *TaskDao) ListTaskByUserId(userId uint64, start, limit int) (r []*model.Task, count int64, err error) {
-	err = dao.Model(&model.Task{}).Offset(start).Limit(limit).
-		Where("uid = ?", userId).Find(&r).Error
+func (dao *TaskDao) ListTaskByUserId(userId uint64) (r []*model.Task, err error) {
+	err = dao.Model(&model.Task{}).Where("uid = ?", userId).Find(&r).Error
 	if err != nil {
 		return
 	}
-
-	err = dao.Model(&model.Task{}).Offset(start).Limit(limit).
-		Where("uid = ?", userId).Count(&count).Error
 
 	return
 }

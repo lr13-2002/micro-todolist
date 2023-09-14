@@ -23,6 +23,8 @@ var (
 	RabbitMQPassWord   string
 	RabbitMQHost       string
 	RabbitMQPort       string
+	RDbHost            string
+	RDbPort            string
 )
 
 func Init() {
@@ -41,6 +43,7 @@ func Init() {
 	LoadEtcd(file)
 	LoadServer(file)
 	LoadRabbitMq(file)
+	LoadRedisData(file)
 }
 
 func LoadMySqlData(file *ini.File) {
@@ -68,4 +71,9 @@ func LoadRabbitMq(file *ini.File) {
 func LoadServer(file *ini.File) {
 	UserServiceAddress = file.Section("server").Key("UserServiceAddress").String()
 	TaskServiceAddress = file.Section("server").Key("TaskServiceAddress").String()
+}
+
+func LoadRedisData(file *ini.File) {
+	RDbHost = file.Section("redis").Key("RDbHost").String()
+	RDbPort = file.Section("redis").Key("RDbPort").String()
 }

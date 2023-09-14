@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"micro-todolist/app/task/repository/db/dao"
+	"micro-todolist/app/task/repository/db/redis"
 	"micro-todolist/app/task/repository/mq"
 	"micro-todolist/app/task/script"
 	"micro-todolist/app/task/service"
@@ -18,6 +19,7 @@ import (
 func main() {
 	config.Init()
 	dao.InitDB()
+	redis.InitRDB()
 	mq.InitRabbitMQ()
 	loadingScript()
 	//etcd 注册
