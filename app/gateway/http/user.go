@@ -14,12 +14,12 @@ import (
 func UserRegisterHandler(ctx *gin.Context) {
 	var req pb.UserRequest
 	if err := ctx.ShouldBind(&req); err != nil {
-		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-ShouldBind"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "UserRegisterHandler-ShouldBind"))
 		return
 	}
 	userResp, err := rpc.UserRegister(ctx, &req)
 	if err != nil {
-		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-UserRegister-RPC"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "UserRegisterHandler-UserRegister-RPC"))
 		return
 	}
 	ctx.JSON(http.StatusOK, ctl.RespSuccess(ctx, userResp))
@@ -28,16 +28,18 @@ func UserRegisterHandler(ctx *gin.Context) {
 func UserLoginHandler(ctx *gin.Context) {
 	var req pb.UserRequest
 	if err := ctx.ShouldBind(&req); err != nil {
-		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-ShouldBind"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "UserRegisterHandler-ShouldBind"))
 	}
 	userResp, err := rpc.UserLogin(ctx, &req)
 	if err != nil {
-		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserRegisterHandler-UserLogin-RPC"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "UserRegisterHandler-UserLogin-RPC"))
+		return 
 	}
 
 	token, err := jwt.GenerateToken(uint(userResp.UserDetail.Id))
 	if err != nil {
-		ctx.JSON(http.StatusOK, ctl.RespError(ctx, err, "UserLoginHandler-GenerateToken"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "UserLoginHandler-GenerateToken"))
+		return 
 	}
 
 	res := &types.TokenData{

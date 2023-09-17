@@ -25,6 +25,9 @@ var (
 	RabbitMQPort       string
 	RDbHost            string
 	RDbPort            string
+	GateWayPath        string
+	UserPath           string
+	TaskPath           string
 )
 
 func Init() {
@@ -44,6 +47,7 @@ func Init() {
 	LoadServer(file)
 	LoadRabbitMq(file)
 	LoadRedisData(file)
+	LoadLogPath(file)
 }
 
 func LoadMySqlData(file *ini.File) {
@@ -76,4 +80,10 @@ func LoadServer(file *ini.File) {
 func LoadRedisData(file *ini.File) {
 	RDbHost = file.Section("redis").Key("RDbHost").String()
 	RDbPort = file.Section("redis").Key("RDbPort").String()
+}
+
+func LoadLogPath(file *ini.File) {
+	GateWayPath = file.Section("logpath").Key("gateway").String()
+	UserPath = file.Section("logpath").Key("user").String()
+	TaskPath = file.Section("logpath").Key("task").String()
 }

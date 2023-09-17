@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"micro-todolist/app/gateway/router"
 	"micro-todolist/app/gateway/rpc"
 	"micro-todolist/config"
+	"os"
 	"time"
 
 	"github.com/go-micro/plugins/v4/registry/etcd"
@@ -15,10 +17,20 @@ import (
 func main() {
 	config.Init()
 	rpc.InitRPC()
+
 	//etcd 注册
 	etcdReg := etcd.NewRegistry(
 		registry.Addrs(fmt.Sprintf("%s:%s", config.EtcdHost, config.EtcdPort)),
 	)
+
+	//日志
+	file, err := os.Create(config.GateWayPath)
+	log.Println(config.GateWayPath)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	log.SetOutput(file)
 
 	//new 一个微服务实例
 	webService := web.NewService(

@@ -154,7 +154,7 @@ func (*TaskSrv) UpdateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.Ta
 		return
 	}
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Millisecond)
 	result, err = redis.DelTask(req.Uid, req.Id, ctx)
 	if err != nil {
 		resp.Code = e.Error
@@ -199,7 +199,7 @@ func (*TaskSrv) DeleteTask(ctx context.Context, req *pb.TaskRequest, resp *pb.Ta
 		return
 	}
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Millisecond)
 	result, err = redis.DelTask(req.Uid, req.Id, ctx)
 	if err != nil {
 		resp.Code = e.Error

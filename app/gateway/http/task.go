@@ -26,7 +26,7 @@ func ListTaskHandler(ctx *gin.Context) {
 	// 调用服务端的函数
 	taskResp, err := rpc.TaskList(ctx, &taskReq)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "taskResp RPC 调用失败"))
+		ctx.JSON(http.StatusInternalServerError, ctl.RespError(ctx, err, "RPC-调用失败"))
 		return
 	}
 	ctx.JSON(http.StatusOK, ctl.RespSuccess(ctx, taskResp))
