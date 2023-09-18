@@ -41,6 +41,7 @@ task/
 ├── repository            // 持久层
 │    ├── db               // 视图层
 │    │    ├── dao         // 对数据库进行操作
+│    │    ├── redis       // 缓存操作
 │    │    └── model       // 定义数据库的模型
 │    └── mq               // 放置 mq
 ├── script                // 监听 mq 的脚本
@@ -58,6 +59,7 @@ task/
 - hystrix
 - jwt-go
 - crypto 
+- go-redis
 
 ## 运行命令
 
