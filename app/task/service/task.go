@@ -43,6 +43,19 @@ func (*TaskSrv) CreateTask(ctx context.Context, req *pb.TaskRequest, resp *pb.Ta
 }
 
 func TaskMQ2DB(ctx context.Context, req *pb.TaskRequest) error {
+	result, err := redis.DelTask(req.Uid, req.Id, ctx)
+	if err != nil {
+		return err
+	}
+
+	log.Println("删除了", result)
+
+	result, err = redis.DelListTask(req.Uid, ctx)
+	if err != nil {
+		return err
+	}
+
+	log.Println("删除了", result)
 	m := &model.Task{
 		Uid:       uint(req.Uid),
 		Title:     req.Title,
@@ -51,7 +64,25 @@ func TaskMQ2DB(ctx context.Context, req *pb.TaskRequest) error {
 		StartTime: req.StartTime,
 		EndTime:   req.EndTime,
 	}
-	return dao.NewTaskDao(ctx).CreateTask(m)
+	err = dao.NewTaskDao(ctx).CreateTask(m)
+
+	time.Sleep(2 * time.Millisecond)
+
+	result, err_ := redis.DelTask(req.Uid, req.Id, ctx)
+	if err_ != nil {
+		return err_
+	}
+
+	log.Println("删除了", result)
+
+	result, err_ = redis.DelListTask(req.Uid, ctx)
+	if err_ != nil {
+		return err_
+	}
+
+	log.Println("删除了", result)
+
+	return err
 }
 
 func (*TaskSrv) GetTasksList(ctx context.Context, req *pb.TaskRequest, resp *pb.TaskListResponse) (err error) {
