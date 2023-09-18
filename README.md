@@ -9,12 +9,12 @@
 ### micro-todolist
 ```go
 micro-todolist/
-├── app                        // 各个微服务
+├── app                   // 各个微服务
 │   ├── gateway           // 网关
-│   ├── task                  // 任务模块微服务
-│   └── user                 // 用户模块微服务
-├── config                   // 配置文件
-├── consts                  // 定义的常量
+│   ├── task              // 任务模块微服务
+│   └── user              // 用户模块微服务
+├── config                // 配置文件
+├── consts                // 定义的常量
 ├── idl                   // protoc文件
 │   └── pb                // 放置生成的pb文件
 ├── pkg                   // 各种包
