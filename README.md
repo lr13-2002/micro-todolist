@@ -60,6 +60,7 @@ task/
 - jwt-go
 - crypto 
 - go-redis
+- ratelimit
 
 ## 运行命令
 

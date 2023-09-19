@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-micro/plugins/v4/registry/etcd v1.2.0
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/juju/ratelimit v1.0.2
 	github.com/streadway/amqp v1.1.0
 	go-micro.dev/v4 v4.10.2
 	golang.org/x/crypto v0.12.0
